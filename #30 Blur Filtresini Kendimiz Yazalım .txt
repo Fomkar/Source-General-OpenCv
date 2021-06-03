@@ -1,0 +1,64 @@
+//Blur Filtresini kendimiz yazdık fonksiyon olarak
+#include<opencv2/core/core.hpp>
+#include<opencv2/highgui/highgui_c.h>
+#include<opencv2/imgcodecs/imgcodecs.hpp>
+#include<opencv2/imgproc/imgproc.hpp>
+#include<opencv2/opencv.hpp>
+#include<iostream>
+
+using namespace cv;
+using namespace std;
+
+float filtre[7][7] = {
+	{1,1,1,1,1,1,1},
+	{1,1,1,1,1,1,1},
+	{1,1,1,1,1,1,1},
+	{1,1,1,1,1,1,1},
+	{1,1,1,1,1,1,1},
+	{1,1,1,1,1,1,1},
+	{1,1,1,1,1,1,1}
+};
+int filtreboyutu = 7;
+double toplam,toplam1,toplam2;
+float l,k;
+Mat son;
+int main()
+{
+	toplam = 0;
+	toplam1 = 0;
+	toplam2 = 0;
+	Mat image = imread("resim.jpg");
+	Mat filteres(image.rows, image.cols, CV_8UC3);
+
+	l = filtreboyutu * filtreboyutu;
+	k = 1.0 / l;
+	for (int i = 0; i < image.rows - filtreboyutu; i++) {
+		for (int j = 0; j < image.cols - filtreboyutu; j++) {
+			for (int t = 0; t < filtreboyutu; t++) {
+				for (int f = 0; f < filtreboyutu; f++) {
+					toplam = toplam + image.at<Vec3b>(i+t, j+f)[0] * filtre[t][f] * k;
+					toplam1=toplam1 +image.at<Vec3b>(i + t, j + f)[1] * filtre[t][f] * k;
+					toplam2 = toplam2 + image.at<Vec3b>(i + t, j + f)[2] * filtre[t][f] * k;
+				}
+			}
+			filteres.at<Vec3b>(i, j)[0] = toplam;
+			filteres.at<Vec3b>(i,j)[1] = toplam1;
+			filteres.at<Vec3b>(i, j)[2] = toplam2;
+
+			toplam = 0;
+			toplam1 = 0;
+			toplam2 = 0;
+		}
+
+	}
+	blur(image, son, Size(7, 7));
+
+	imshow("Resim", image);
+
+	imshow("Hazırresim", son);
+
+	imshow("KendiResim", filteres);
+
+	waitKey(0);
+	return 0;
+}

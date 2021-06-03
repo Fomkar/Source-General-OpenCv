@@ -1,0 +1,51 @@
+#include "opencv2/highgui/highgui.hpp"
+#include "opencv2/imgproc/imgproc.hpp"
+#include "opencv2/core/core.hpp"
+#include <iostream>
+
+using namespace std;
+using namespace cv;
+
+Mat on, off;
+void fonksiyon(int event, int x, int y, int flags, void* userdata)
+{
+
+	Mat crtImg(500, 500, CV_8UC3, Scalar(0, 0, 0));
+
+	for (int i = 0; i < off.cols; i++) {
+		for (int j = 0; j < off.rows; j++) {
+			crtImg.at<Vec3b>(j+150, i+150) = off.at<Vec3b>(j,i);
+
+		}
+	}
+	
+	imshow("Pencere", crtImg);
+
+	if (event == EVENT_LBUTTONDOWN)
+	{
+		if (x > 150 && x < 150 + off.rows && y > 150 && y < 150 + off.cols) {
+			crtImg = 0;
+			for (int i = 0; i < on.cols; i++) {
+				for (int j = 0; j < on.rows; j++) {
+					crtImg.at<Vec3b>(j + 150, i + 150) = on.at<Vec3b>(j, i);
+
+				}
+			}
+			printf("Basti");
+		}
+	}
+	imshow("Pencere", crtImg);
+
+}
+int main()
+{
+
+	on = imread("on.jpg");
+	off = imread("off.jpg");
+
+	namedWindow("Pencere", CV_WINDOW_AUTOSIZE);
+	setMouseCallback("Pencere", fonksiyon, NULL);
+
+	waitKey(0);
+	return 0;
+}

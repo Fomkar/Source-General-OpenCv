@@ -1,0 +1,33 @@
+// Morfolojik Dönüşümler Tophant Gradient
+#include<opencv2/opencv.hpp>
+#include<opencv2/imgcodecs/imgcodecs.hpp>
+#include<opencv2/imgproc/imgproc.hpp>
+#include<opencv2/core/core.hpp>
+#include<opencv2/highgui/highgui.hpp>
+#include<iostream>
+
+using namespace cv;
+using namespace std;
+
+Mat image,image1, son, gradient, tophat;
+
+int main()
+{
+	image = imread("resim.jpg");
+	image1 = imread("resim1.jpg");
+	imshow("origin", image);
+	//imshow("origin1", image1);
+
+	Mat element = getStructuringElement(MORPH_RECT, (Size(5, 5)));
+
+
+	morphologyEx(image, tophat, MORPH_TOPHAT, element, Point(-1, -1), 2);
+	imshow("Tophant", tophat);
+
+	morphologyEx(image, gradient, MORPH_GRADIENT, element, Point(-1, -1), 3);
+	
+	imshow("Gradient", gradient);
+	
+	waitKey(0);
+	return 0;
+}

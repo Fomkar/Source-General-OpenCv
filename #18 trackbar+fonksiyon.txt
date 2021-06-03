@@ -1,0 +1,24 @@
+#include <iostream>
+
+#include "opencv2/highgui/highgui.hpp"
+#include "opencv2/imgproc/imgproc.hpp"
+#include "opencv2/core/core.hpp"
+
+using namespace std;
+using namespace cv;
+
+int trackVal;
+
+void callbacktrack(int, void*)
+{
+	count << trackVal << endl;
+}
+
+int main()
+{
+
+	namedWindow("Trackbar Penceresi", CV_WINDOW_AUTOSIZE);
+	createTrackbar("Name", "Trackbar Penceresi", &trackVal, 100,callbacktrack);
+
+	return 0;
+}

@@ -1,0 +1,21 @@
+#include<opencv2/core/core.hpp>
+#include<opencv2/highgui/highgui.hpp>
+#include<opencv2/imgproc/imgproc.hpp>
+#include<opencv2/imgcodecs/imgcodecs.hpp>
+#include<iostream>
+
+using namespace std;
+using namespace cv;
+
+int main()
+{
+	Mat crtIm(240, 240, CV_16UC3, Scalar(0, 0, 0));
+
+	namedWindow("Resim",CV_WINDOW_AUTOSIZE);
+	imshow("Resim", crtIm);
+
+	waitKey(0);
+
+
+	return 0;
+}

@@ -1,0 +1,30 @@
+//Görüntüyü kaydetmek
+#include<opencv2/opencv.hpp>
+#include<opencv2/imgproc/imgproc.hpp>
+#include<opencv2/imgcodecs/imgcodecs.hpp>
+#include<opencv2/highgui/highgui.hpp>
+#include<opencv2/core/core.hpp>
+#include<iostream>
+
+using namespace cv;
+using namespace std;
+
+Mat image,grayim;
+
+int main()
+{
+	image = imread("resim.jpg");
+	
+	resize(image, image, Size(500, 500));
+
+	cvtColor(image, grayim, CV_BGR2GRAY);
+
+	//imwrite("kayıt.jpg", image);
+	imwrite("D:/Yeni klasör/gri.jpg", grayim);
+	imshow("Resim Origin", image);
+
+
+
+	waitKey(0);
+	return 0;
+}

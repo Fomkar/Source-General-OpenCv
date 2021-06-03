@@ -1,0 +1,60 @@
+// Görüntüdeki renk tespiti
+#include<opencv2/opencv.hpp>
+#include<opencv2/imgproc/imgproc.hpp>
+#include<opencv2/imgcodecs/imgcodecs.hpp>
+#include<opencv2/highgui/highgui.hpp>
+#include<opencv2/core/core.hpp>
+#include<iostream>
+#include<stdio.h>
+
+using namespace cv;
+using namespace std;
+
+Mat image,hsv,imthersh;
+
+
+int iLowH = 0;
+int iHighH = 179;
+
+int iLowS = 0;
+int iHighS = 255;
+
+int iLowV = 0;
+int iHighV = 255;
+
+void track(int, void*)
+{
+	cvtColor(image, hsv, CV_BGR2HSV);
+	inRange(hsv, Scalar(iLowH, iLowS, iLowV), Scalar(iHighH, iHighS, iHighV), imthersh);
+
+	erode(imthersh, imthersh, getStructuringElement(MORPH_ELLIPSE, Size(5, 5)));
+	dilate(imthersh, imthersh, getStructuringElement(MORPH_ELLIPSE, Size(5, 5)));
+
+	dilate(imthersh, imthersh, getStructuringElement(MORPH_ELLIPSE, Size(5, 5)));
+	erode(imthersh, imthersh, getStructuringElement(MORPH_ELLIPSE, Size(5, 5)));
+
+	imshow("Color", imthersh);
+
+}
+int main()
+{
+	image = imread("resim.jpg");
+	resize(image, image, Size(600, 600));
+	imshow("Resim Origin ", image);
+
+	namedWindow("Control", CV_WINDOW_AUTOSIZE);
+
+	createTrackbar("LowH", "Control", &iLowH, 179, track);
+	createTrackbar("HighH", "Control", &iHighH, 179, track);
+
+	createTrackbar("LowS", "Control", &iLowS, 255, track);
+	createTrackbar("HighS", "Control", &iHighS, 255, track);
+
+	createTrackbar("LowV", "Control", &iLowV, 255, track);
+	createTrackbar("HighV", "Control", &iHighV, 255, track);
+
+
+
+	waitKey(0);
+	return 0;
+}

@@ -1,0 +1,39 @@
+#include "opencv2/highgui/highgui.hpp"
+#include "opencv2/imgproc/imgproc.hpp"
+#include "opencv2/core/core.hpp"
+#include <iostream>
+
+using namespace std;
+using namespace cv;
+
+Mat bar;
+int trackVal;
+
+Mat crtImg(500, 500, CV_8UC3, Scalar(0, 0, 0));
+
+void track(int,void*) {
+	
+	crtImg = 0;
+	for (int i = 0; i < trackVal; i++) {
+		for (int j = 0; j < bar.rows; j++) {
+			crtImg.at<Vec3b>(j, i)[0] = 0;
+			crtImg.at<Vec3b>(j, i)[1] = 255;
+			crtImg.at<Vec3b>(j, i)[2] = 255- trackVal;
+		}
+	}
+
+	imshow("Pencere", crtImg);
+
+}
+int main()
+{
+
+	bar = imread("bar.jpg");
+
+
+	namedWindow("Trackbar Penceresi", CV_WINDOW_AUTOSIZE);
+	createTrackbar("Name", "Trackbar Penceresi", &trackVal, crtImg.cols,track);
+
+	waitKey(0);
+	return 0;
+}

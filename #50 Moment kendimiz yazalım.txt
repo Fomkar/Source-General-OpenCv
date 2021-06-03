@@ -1,0 +1,118 @@
+#include <opencv2/core.hpp>
+#include <opencv2/imgcodecs.hpp>
+#include <opencv2/highgui.hpp>
+#include "opencv2/imgproc.hpp"
+#include <opencv2/objdetect/objdetect.hpp>
+#include <iostream>
+#include <string>
+
+using namespace cv;
+using namespace std;
+
+
+
+Mat hsvres;
+Mat isres;
+Mat img;
+Mat drawing;
+
+
+float alan;
+float merkezx, merkezy;
+
+
+int main(int argc, char* argv[])
+{
+
+	img = imread("moment.jpg");
+
+
+	//resize(img, img, Size(700, 700));
+
+
+	Mat im_1(img.rows, img.cols, CV_8UC1, Scalar(0));
+	Mat im_2(img.rows, img.cols, CV_8UC1, Scalar(0));
+
+	Mat bosres(img.rows, img.cols, CV_8UC1, Scalar(0));
+
+	cvtColor(img, hsvres, COLOR_BGR2HSV);
+
+
+	inRange(hsvres, Scalar(0, 0, 0), Scalar(0, 0, 0), isres);
+
+
+	erode(isres, isres, getStructuringElement(MORPH_ELLIPSE, Size(9, 9)));
+	dilate(isres, isres, getStructuringElement(MORPH_ELLIPSE, Size(9, 9)));
+
+
+	dilate(isres, isres, getStructuringElement(MORPH_ELLIPSE, Size(9, 9)));
+	erode(isres, isres, getStructuringElement(MORPH_ELLIPSE, Size(9, 9)));
+
+
+	vector<vector<Point> > contours;
+	vector<Vec4i>hierarchy;
+
+	findContours(isres, contours, hierarchy, RETR_TREE, CHAIN_APPROX_SIMPLE, Point(0, 0));
+
+	vector<Moments> mu(contours.size());
+
+	for (int i = 0; i < contours.size(); i++)
+	{
+		mu[i] = moments(contours[i]);
+	}
+
+
+	vector<Point2f> mc(contours.size());
+
+	for (int i = 0; i < contours.size(); i++)
+	{
+		float mcenterx = mu[i].m10 / mu[i].m00;
+		float mcentery = mu[i].m01 / mu[i].m00;
+		mc[i] = Point2f((mcenterx), (mcentery));
+
+		printf("alan1 : %f\n", mu[i].m00);
+		printf("merkezx1 : %f\n", mcenterx);
+		printf("merkezy1 : %f\n", mcentery);
+		
+	}
+
+	for (int i = 0;i < img.cols;i++)
+	{
+		for (int j = 0;j < img.rows;j++)
+		{
+			alan += isres.at<uchar>(j, i) / 255; // normalize etmek için 255 e bölüyoruz
+			merkezx += (i*isres.at<uchar>(j, i)) / 255;
+			merkezy += (j*isres.at<uchar>(j, i)) / 255;
+		}
+	}
+	printf("ALAN2 : %f\n", alan);
+	printf("merkezx : %f\n", merkezx / alan);
+	printf("merkezy : %f\n", merkezy / alan);
+	
+	imshow("R", isres);
+
+	waitKey(0);
+	return 0;
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

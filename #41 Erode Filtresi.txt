@@ -1,0 +1,29 @@
+// Erode Filtresi Uygulama
+
+#include<opencv2/opencv.hpp>
+#include<opencv2/imgproc/imgproc.hpp>
+#include<opencv2/imgcodecs/imgcodecs.hpp>
+#include<opencv2/highgui/highgui.hpp>
+#include<opencv2/core/core.hpp>
+#include<iostream>
+
+using namespace std;
+using namespace cv;
+
+Mat image, grayim, e_image;
+
+int main()
+{
+
+	image = imread("1.bmp");
+	erode(image, e_image, getStructuringElement(MORPH_RECT, Size(7, 7)));
+
+
+	imshow("Erosion", e_image);
+
+
+	imshow("Origin Resim ", image);
+
+	waitKey(0);
+	return 0;
+}

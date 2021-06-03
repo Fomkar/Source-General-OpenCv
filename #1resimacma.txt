@@ -1,0 +1,32 @@
+#include <opencv2/core/core.hpp>
+#include <opencv2/highgui/highgui.hpp>
+#include <iostream>
+
+using namespace std;
+using namespace cv;
+
+Mat orgImg;
+
+int main()
+{
+	orgImg = imread("lena.jpg"); //Görüntüyü orgImg Matrisine kaydediyoruz.
+	
+	namedWindow("Resim Penceresi", CV_WINDOW_AUTOSIZE); //Pencere oluþturuyoruz.
+
+	if (orgImg.empty())
+	{
+		cout << "Hatalý Resim" << endl;
+                return -1; //ALGORÝTMANIN HATALI OLDUÐUNU BELÝRTÝYORUZ.
+	}
+	else
+	{
+		
+		imshow("Resim Penceresi", orgImg); //Resmi Gösteriyoruz.
+		waitKey(0); // Bir tuþa basana kadar bekliyor.
+                destroyWindow("Resim Penceresi"); //Pencereleri kapatýyoruz.
+	}
+
+	
+	return 0;
+}
+

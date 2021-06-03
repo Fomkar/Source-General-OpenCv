@@ -1,0 +1,42 @@
+// Görüntüyü Döndürmek
+#include<opencv2/opencv.hpp>
+#include<opencv2/imgproc/imgproc.hpp>
+#include<opencv2/imgcodecs/imgcodecs.hpp>
+#include<opencv2/highgui/highgui.hpp>
+#include<opencv2/core/core.hpp>
+#include<iostream>
+
+using namespace cv;
+using namespace std;
+
+Mat image,image1,image2,image3;
+
+int main()
+{
+	image = imread("resim.jpg");
+	resize(image, image, Size(500, 500));
+	imshow("Resim", image);
+/*
+	transpose(image, image);
+	flip(image, image1,+1);
+	imshow("Resim1", image1);
+
+	flip(image, image2, 0);
+	imshow("Resim2", image2);
+
+	flip(image, image3, -1);
+	imshow("Resim3", image3);
+
+
+	vector<Vec3i>vektor;
+	*/
+
+	Mat r = getRotationMatrix2D(Point(200, 200), -30, 1);
+	
+	warpAffine(image, image1, r, image.size());
+
+	imshow("30Derece", image1);
+
+	waitKey(0);
+	return 0;
+}

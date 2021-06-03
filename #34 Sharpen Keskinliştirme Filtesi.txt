@@ -1,0 +1,31 @@
+//Sharpen Keskinleştirme Filtresi
+#include<opencv2/opencv.hpp>
+#include<opencv2/imgproc/imgproc.hpp>
+#include<opencv2/imgcodecs/imgcodecs.hpp>
+#include<opencv2/highgui/highgui.hpp>
+#include<opencv2/core/core.hpp>
+#include<iostream>
+
+
+using namespace cv;
+using namespace std;
+
+Mat image,s_filtre;
+int trackval = 1;
+void track(int, void*)
+{
+	addWeighted(image, trackval / 7.0, s_filtre, -0.5, 0, s_filtre);
+	imshow("Add", s_filtre);
+}
+
+int main()
+{
+	image = imread("resim.jpg");
+
+	GaussianBlur(image, s_filtre, Size(3, 3), 11);
+	namedWindow("Pencere", CV_WINDOW_AUTOSIZE);
+	createTrackbar("Filre", "Pencere", &trackval, 100, track);
+	imshow("Original", image);
+	waitKey(0);
+	return 0;
+}

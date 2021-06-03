@@ -1,0 +1,39 @@
+// Görüntülerde Daire Bulmak
+#include<opencv2/opencv.hpp>
+#include<opencv2/imgproc/imgproc.hpp>
+#include<opencv2/imgcodecs/imgcodecs.hpp>
+#include<opencv2/highgui/highgui.hpp>
+#include<opencv2/core/core.hpp>
+#include<iostream>
+
+using namespace cv;
+using namespace std;
+
+Mat image,grayim,orgImg;
+
+int main()
+{
+	image = imread("2.bmp");
+	resize(image, image, Size(800, 800));
+	cvtColor(image, grayim, CV_BGR2GRAY);
+	GaussianBlur(grayim, grayim, Size(3, 3), 2, 2);
+
+	vector<Vec3f>circles;
+	HoughCircles(grayim, circles, CV_HOUGH_GRADIENT, 1, grayim.rows / 8, 200, 15);
+
+	for (size_t i = 0; i < circles.size(); i++)
+	{
+		Point center(cvRound(circles[i][0]), cvRound(circles[i][1]));
+		int radius = cvRound(circles[i][2]);
+		circle(image, center, 3, Scalar(0, 255, 0), -1, 8, 0);
+		circle(image, center, radius, Scalar(0, 0, 255), 3, 8, 0);
+	}
+	
+	cout << sizeof(circles) << endl;
+	cout<<cvRound(circles[0][1])<<endl;
+	imshow("Hough Circle Transform Demo", image);
+
+
+	waitKey(0);
+	return 0;
+}

@@ -1,0 +1,32 @@
+//Götüntüyü Aynalama 
+#include<opencv2/opencv.hpp>
+#include<opencv2/imgproc/imgproc.hpp>
+#include<opencv2/imgcodecs/imgcodecs.hpp>
+#include<opencv2/highgui/highgui.hpp>
+#include<opencv2/core/core.hpp>
+#include<iostream>
+
+using namespace cv;
+using namespace std;
+
+Mat image, grayim;
+
+int main()
+{
+	image = imread("pi.jpg");
+
+	resize(image, image, Size(500, 500));
+	imshow("Resim", image);
+	
+	flip(image, image, 0);
+	imshow("Dikey", image);
+
+	flip(image, image, +1);
+	imshow("Yatay", image);
+	
+	
+	waitKey(0);
+
+	
+	return 0;
+}

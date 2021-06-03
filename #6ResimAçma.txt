@@ -1,0 +1,30 @@
+#include<opencv2/core/core.hpp>
+#include<opencv2/highgui/highgui.hpp>
+#include<opencv2/imgcodecs/imgcodecs.hpp>
+#include<opencv2/imgproc/imgproc.hpp>
+#include<iostream>
+
+using namespace std;
+using namespace cv;
+
+Mat newSize,newSize2;
+
+int main()
+{
+	Mat image = imread("D:\\Tohum Resimler\\YM\\1.bmp");
+
+	Mat image2 = imread("D:\\Tohum Resimler\\YM\\2.bmp");
+
+	resize(image2, newSize2, Size(600, 400));
+	resize(image, newSize, Size(600, 400));
+
+	namedWindow("Resim1",CV_WINDOW_AUTOSIZE);
+	namedWindow("Resim2", CV_WINDOW_AUTOSIZE);
+
+	imshow("Resim1", newSize2);
+	imshow("Resim2", newSize);
+
+	waitKey(0);
+
+	return 0;
+}

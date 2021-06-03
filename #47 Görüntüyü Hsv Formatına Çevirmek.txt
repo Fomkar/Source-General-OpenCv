@@ -1,0 +1,28 @@
+//Görüntüyü HSV formantına çevirmek
+#include<opencv2/core/core.hpp>
+#include<opencv2/highgui/highgui.hpp>
+#include<opencv2/imgproc/imgproc.hpp>
+#include<opencv2/imgcodecs/imgcodecs.hpp>
+#include<opencv2/opencv.hpp>
+#include<iostream>
+#include<stdio.h>
+
+using namespace cv;
+using namespace std;
+
+Mat image;
+
+int main()
+{
+	image = imread("resim.jpg");
+	resize(image, image, Size(500, 600));
+	imshow("Resim Origin", image);
+
+	cvtColor(image, image, CV_BGR2HSV);
+	imshow("hsv formatı", image);
+
+
+
+	waitKey(0);
+	return 0;
+}

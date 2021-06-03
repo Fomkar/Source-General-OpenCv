@@ -1,0 +1,21 @@
+#include<opencv2/core/core.hpp>
+#include<opencv2/highgui/highgui.hpp>
+#include<opencv2/imgproc/imgproc.hpp>
+#include<opencv2/imgcodecs/imgcodecs.hpp>
+#include<iostream>
+
+using namespace std;
+using namespace cv;
+
+int main()
+{
+	Mat image = imread("1.bmp");
+	Mat grayimage;
+
+	cvtColor(image, grayimage, CV_BGR2GRAY);
+	imshow("Resim1", image);
+	imshow("Resim", grayimage);
+
+	waitKey(0);
+	return 0;
+}

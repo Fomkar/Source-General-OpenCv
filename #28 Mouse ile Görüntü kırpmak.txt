@@ -1,0 +1,65 @@
+// Görüntüyü mouse ile kırpma ve ayrı bir pencere için rectangle oluşturuyor.
+
+#include<opencv2/core/core.hpp>
+#include<opencv2/highgui/highgui.hpp>
+#include<opencv2/imgproc/imgproc.hpp>
+#include<opencv2/opencv.hpp>
+#include<opencv2/imgcodecs/imgcodecs.hpp>
+#include<iostream>
+
+using namespace cv;
+using namespace std;
+
+Mat image;
+Point Pt1, Pt2;
+void fonksiyon(int event, int x, int y, int flags, void*userdata)
+{
+	if (event == EVENT_LBUTTONDOWN)
+	{
+		Pt1.x = x;
+		Pt1.y = y;
+	}
+	if (event == EVENT_MOUSEMOVE && flags == EVENT_FLAG_LBUTTON)
+	{
+		Pt2.x = x;
+		Pt2.y = y;
+
+		Mat gecici = Mat::zeros(image.size(), CV_8UC3);
+		rectangle(gecici, Point(Pt1.x, Pt1.y), Point(Pt2.x, Pt2.y), Scalar(0, 255, 0), 4, 8, 0);
+		gecici = gecici + image;
+		imshow("Kirp", gecici);
+
+	}
+	if (event == EVENT_LBUTTONUP)
+	{
+		Rect crop;
+		crop.x = Pt1.x;
+		crop.y = Pt1.y;
+
+		crop.width = Pt2.x - Pt1.x;
+		crop.height = Pt2.y - Pt1.y;
+		
+		Mat son = image(crop);
+		imshow("Orijinal", son);
+
+	}
+
+
+	
+}
+
+
+int main()
+{
+
+	image = imread("resim.jpg");
+
+	namedWindow("Pencere", CV_WINDOW_AUTOSIZE);
+
+	setMouseCallback("Pencere", fonksiyon, NULL);
+
+	imshow("Pencere", image);
+
+	waitKey(0);
+	return 0;
+}

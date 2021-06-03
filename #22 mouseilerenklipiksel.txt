@@ -1,0 +1,40 @@
+#include "opencv2/highgui/highgui.hpp"
+#include <iostream>
+
+using namespace std;
+using namespace cv;
+
+Mat img;
+void fonksiyon(int event, int x, int y, int flags, void* userdata)
+{
+
+	if (event == EVENT_MOUSEMOVE)
+	{
+		int blue = img.at<Vec3b>(y, x)[0];
+		int green = img.at<Vec3b>(y, x)[1];
+		int red = img.at<Vec3b>(y, x)[2];
+
+		cout << "Blue Value : " << blue << "  ";
+		cout << "Green Value : " << green << "  ";
+		cout << "Kirmizi Value : " << red << "  ";
+		cout << "Sutun : " << x << "Satir : " << y << endl;
+	}
+
+
+}
+
+int main()
+{
+
+	img = imread("resim.jpg");
+
+	namedWindow("Pencere", CV_WINDOW_AUTOSIZE);
+
+	setMouseCallback("Pencere", fonksiyon, NULL);
+
+	imshow("Pencere", img);
+
+	waitKey(0);
+	return 0;
+
+}

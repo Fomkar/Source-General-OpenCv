@@ -1,0 +1,21 @@
+#include<opencv2/core/core.hpp>
+#include<iostream>
+
+using namespace cv;
+using namespace std;
+
+Mat image, b_filtre, g_filtre;
+int main()
+{
+	image = imread("resim.jpg");
+	bilateralFilter(image, b_filtre, 15, 100, 100);
+	GaussianBlur(image, g_filtre, Size(37, 37), 1);
+
+	imshow("origin pic", image);
+	imshow("Bilareal Filtre", b_filtre);
+	imshow("Gauss Filtre", g_filtre);
+
+
+	waitKey(0);
+	return 0;
+}

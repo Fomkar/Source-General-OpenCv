@@ -1,0 +1,25 @@
+#include <iostream>
+#include "opencv2/highgui/highgui.hpp"
+#include "opencv2/imgproc/imgproc.hpp"
+#include "opencv2/core/core.hpp"
+
+using namespace std;
+using namespace cv;
+
+Mat orgImg,gri,binary;
+
+int main()
+{
+
+
+	orgImg =  imread("logo.jpg");
+	
+	cvtColor(orgImg, gri, CV_BGR2GRAY);
+	threshold(gri, binary, 30,255, THRESH_BINARY);
+
+	imshow("gri resim", gri);
+	imshow("Output", binary);
+
+	waitKey(0);
+	return 0;
+}

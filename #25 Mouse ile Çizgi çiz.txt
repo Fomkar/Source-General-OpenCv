@@ -1,0 +1,53 @@
+#include<opencv2/core/core.hpp>
+#include<opencv2/highgui/highgui.hpp>
+#include<opencv2/imgcodecs/imgcodecs.hpp>
+#include<opencv2/imgproc/imgproc.hpp>
+#include<opencv2/opencv.hpp>
+#include<iostream>
+
+using namespace cv;
+using namespace std;
+
+Mat image;
+int sayac=0;
+Point pt1, pt2;
+
+void fonksiyon(int event, int x, int y,int flags, void*userdata)
+{
+	if (event == EVENT_LBUTTONUP )
+	{
+		sayac++;
+		if (sayac == 1)
+		{
+			pt1.x = x;
+			pt1.y = y;
+		}
+		else if (sayac == 2)
+		{
+			pt2.x = x;
+			pt2.y = y;
+
+			line(image, pt1, pt2, Scalar(0, 0, 255), 2, 8, 0);
+
+			imshow("pencere", image);
+			sayac = 0;
+		}
+	}
+
+
+
+}
+
+int main()
+{
+
+	image = imread("resim.jpg");
+
+	namedWindow("pencere", CV_WINDOW_AUTOSIZE);
+
+	setMouseCallback("pencere", fonksiyon, NULL);
+
+	imshow("pencere", image);
+	waitKey(0);
+	return 0;
+}

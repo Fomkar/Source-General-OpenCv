@@ -1,0 +1,19 @@
+#include<opencv2/core/core.hpp>
+#include<opencv2/highgui/highgui.hpp>
+#include<opencv2/imgproc/imgproc.hpp>
+#include<opencv2/imgcodecs/imgcodecs.hpp>
+#include<iostream>
+
+using namespace std;
+using namespace cv;
+
+int main()
+{
+	Mat crtGray(400, 600, CV_8UC1, Scalar(150));
+	namedWindow("Resim Penceresi", CV_WINDOW_AUTOSIZE);
+	imshow("Resim Penceresi",crtGray);
+
+	waitKey(0);
+
+	return 0;
+}

@@ -1,0 +1,23 @@
+#include<opencv2/highgui/highgui.hpp>
+#include<opencv2/core/core.hpp>
+#include<opencv2/imgcodecs/imgcodecs.hpp>
+#include<opencv2/imgproc/imgproc.hpp>
+#include<iostream>
+
+using namespace std;
+using namespace cv;
+
+Mat grayim;
+int main()
+{
+	Mat image = imread("resim.jpg");
+	cvtColor(image, grayim, CV_BGR2GRAY);
+	int pixel;
+	pixel = grayim.at<uchar>(200, 0);
+	cout << "pixel degeri =" << pixel << endl;
+
+	imshow("Resim", grayim);
+
+	waitKey(0);
+	return 0;
+}

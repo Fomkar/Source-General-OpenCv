@@ -1,0 +1,26 @@
+//blur Filtre
+#include<opencv2/imgproc/imgproc.hpp>
+#include<opencv2/highgui/highgui.hpp>
+#include<opencv2/opencv.hpp>
+#include<iostream>
+
+using namespace cv;
+using namespace std;
+
+Mat son;
+int main()
+{
+	Mat image = imread("resim.jpg");
+
+	blur(image, son, Size(6, 6));
+
+	imshow("Origin", image);
+	imshow("Blur", son);
+
+
+
+
+	waitKey(0);
+	return 0;
+}
+

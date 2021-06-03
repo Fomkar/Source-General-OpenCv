@@ -1,0 +1,33 @@
+#include<opencv2/highgui/highgui.hpp>
+#include<opencv2/core/core.hpp>
+#include<opencv2/imgproc/imgproc.hpp>
+#include<opencv2/imgcodecs/imgcodecs.hpp>
+#include<iostream>
+
+using namespace std;
+using namespace cv;
+
+int main()
+{
+	Mat image = imread("resim.jpg");
+
+	imshow("Orijinal Resim", image);
+	
+	Mat bgrkanal[3];
+
+	split(image, bgrkanal);
+
+		imshow("blue", bgrkanal[0]);
+		imshow("green", bgrkanal[1]);
+		imshow("red", bgrkanal[2]);
+	
+	vector<Mat> kanallar;
+	kanallar.push_back(bgrkanal[0]);
+	kanallar.push_back(bgrkanal[1]);
+	kanallar.push_back(bgrkanal[2]);
+	merge(kanallar, image);
+
+	imshow("Son ", image);
+	waitKey(0);
+	return 0;
+}

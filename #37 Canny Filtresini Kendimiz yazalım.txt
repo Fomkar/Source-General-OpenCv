@@ -1,0 +1,69 @@
+// Canny Kenar Tespiti Fonksiyonun Kendimiz yazalım Trackbar   
+#include<opencv2/highgui/highgui.hpp>
+#include<opencv2/core/core.hpp>
+#include<opencv2/imgcodecs/imgcodecs.hpp>
+#include<opencv2/opencv.hpp>
+#include<opencv2/imgproc/imgproc.hpp>
+#include<iostream>
+
+using namespace cv;
+using namespace std;
+
+int trackval = 1;
+Mat image,grayim;
+
+void track(int, void*)
+{
+	Mat bos(image.cols, image.rows, CV_8UC1, Scalar(0, 0, 0));
+	Mat bos1(image.cols, image.rows, CV_8UC1, Scalar(0, 0, 0));
+	for (int i = 0; i < image.cols - 1; i++)
+	{
+		for (int j = 0; j < image.rows - 1; j++)
+		{
+			int a = grayim.at<uchar>(j + 1, i) - grayim.at<uchar>(j, i);
+			int b = grayim.at<uchar>(j, i) - grayim.at<uchar>(j + 1, i);
+
+			if (a > trackval || b > trackval)
+			{
+				bos.at<uchar>(j, i) = 255;
+			}
+			else
+			{
+				bos.at<uchar>(j, i) = 0;
+			}
+		}
+	}
+	for (int i = 0; i < image.cols - 1;i++) 
+	{
+		for (int j = 0; j < image.rows; j++)
+		{
+			int a = grayim.at<uchar>(j , i+1) - grayim.at<uchar>(j, i);
+			int b = grayim.at<uchar>(j, i) - grayim.at<uchar>(j , i+1);
+			
+			if (a > trackval || b > trackval)
+			{
+				bos1.at<uchar>(j, i) = 255;
+			}
+			else
+			{
+				bos1.at<uchar>(j, i) = 0;
+			}
+
+		}
+	}
+	imshow("Picture", grayim);
+	imshow("Picture1", bos + bos1);
+}
+
+int main()
+{
+	image = imread("resim.jpg");
+	cvtColor(image, grayim, CV_BGR2GRAY);
+
+	namedWindow("TrackBar", CV_WINDOW_AUTOSIZE);
+	createTrackbar("Turev", "TrackBar", &trackval, 255, track);
+
+	imshow("Origin Resim", image);
+	waitKey(0);
+	return 0;
+}

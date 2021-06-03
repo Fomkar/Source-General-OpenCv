@@ -1,0 +1,58 @@
+// Bulmaca Çözen Algoritma 
+#include<opencv2/opencv.hpp>
+#include<opencv2/core/cuda.hpp>
+#include<opencv2/highgui/highgui.hpp>
+#include<opencv2/core/core.hpp>
+#include<opencv2/imgproc/imgproc.hpp>
+#include<opencv2/imgcodecs/imgcodecs.hpp>
+#include<iostream>
+
+using namespace cv;
+using namespace std;
+
+Mat image,grayim,imthresh;
+
+int main()
+{
+	image = imread("resim.png");
+	imshow("origin resim", image);
+
+	cvtColor(image, grayim, COLOR_BGR2GRAY);
+	threshold(grayim, imthresh, 100, 255, THRESH_BINARY_INV);
+	
+	//imshow("binary", imthresh);
+	vector<vector<Point>>contours;
+
+	findContours(imthresh, contours, RETR_EXTERNAL, CHAIN_APPROX_NONE);
+
+	Mat path = Mat::zeros(image.size(), CV_8UC1);
+	drawContours(path, contours, 0,Scalar(255), 2);
+	//imshow("Contours", path);
+
+
+	Mat kerne1 = Mat::ones(5,5, CV_8UC1);
+	dilate(path, path, kerne1);
+	// imshow("dilate", path);
+
+	Mat path_erode;
+	erode(path, path_erode, kerne1);
+	imshow("path erode", path_erode);
+
+	absdiff(path, path_erode, path);
+
+	vector<Mat>channels;
+	split(image, channels);
+
+
+	channels[0] &= ~path;
+	channels[1] &= ~path;
+	channels[2] |= path;
+
+	Mat son;
+	merge(channels, son);
+
+	//imshow("abs", path);
+	imshow("Cozum", son);
+	waitKey(0);
+	return 0;
+}

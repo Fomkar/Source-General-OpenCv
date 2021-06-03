@@ -1,0 +1,33 @@
+// Morfolojik Dönüşümler
+#include<opencv2/opencv.hpp>
+#include<opencv2/imgproc/imgproc.hpp>
+#include<opencv2/imgcodecs/imgcodecs.hpp>
+#include<opencv2/highgui/highgui.hpp>
+#include<opencv2/core/core.hpp>
+#include<iostream>
+
+using namespace cv;
+using namespace std;
+
+Mat image, grayim,open,close;
+
+int main()
+{
+	image = imread("1.bmp");
+	resize(image, image, Size(750, 750));
+	imshow("Origin", image);
+
+
+	Mat element = getStructuringElement(MORPH_RECT, Size(3, 3));
+																
+	morphologyEx(image,open, MORPH_OPEN, element, Point(-1, -1), 4);
+	imshow("Open", open);
+
+
+	morphologyEx(image, close, MORPH_CLOSE, element, Point(-1, -1), 4);
+	
+	imshow("close", close);
+	
+	waitKey(0);
+	return 0;
+}

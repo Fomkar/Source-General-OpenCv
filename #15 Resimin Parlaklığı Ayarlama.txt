@@ -1,0 +1,27 @@
+#include<opencv2/highgui/highgui.hpp>
+#include<opencv2/core/core.hpp>
+#include<opencv2/imgproc/imgproc.hpp>
+#include<opencv2/imgcodecs/imgcodecs.hpp>
+#include<iostream>
+
+using namespace std;
+using namespace cv;
+
+
+int main()
+{
+	Mat image = imread("araba.jpg");
+	resize(image, image, Size(500, 500));
+
+	Mat newhigh, newlow;
+
+	image.convertTo(newhigh, -1, 2, 0);
+	
+	image.convertTo(newlow, -1, 0.4, 0);
+
+	imshow("Resim", image);
+	imshow("HIGH", newhigh);
+	imshow("LOW", newlow);
+	waitKey(0);
+	return 0;
+}

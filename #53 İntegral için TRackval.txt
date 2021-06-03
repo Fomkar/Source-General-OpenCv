@@ -1,0 +1,38 @@
+#include<opencv2/opencv.hpp>
+#include<opencv2/imgproc/imgproc.hpp>
+#include<opencv2/imgcodecs/imgcodecs.hpp>
+#include<opencv2/highgui/highgui.hpp>
+#include<opencv2/core/core.hpp>
+#include<iostream>
+
+
+
+using namespace cv;
+using namespace std;
+
+int Integral,sonhata;
+Mat image,vid;
+float pidTerm, kp=0.5, ki=0, kd=0.3;
+int track = 500;
+void trackFonk(int, void*)
+{
+	int hata = 500 - track;
+	Integral += hata;
+
+	pidTerm = kp * hata + Integral * ki + kd*(hata - sonhata);
+
+	printf("%2.f \n", pidTerm);
+}
+
+int main()
+{
+
+	namedWindow("Trackbar", CV_WINDOW_AUTOSIZE);
+	createTrackbar("Name", "Trackbar", &track, 1000, trackFonk);
+
+
+
+
+	waitKey(0);
+	return 0;
+}

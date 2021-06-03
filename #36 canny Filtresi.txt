@@ -1,0 +1,26 @@
+#include "opencv2/core/core.hpp"
+#include "opencv2/highgui/highgui.hpp"
+#include "opencv2/imgproc/imgproc.hpp"
+#include "iostream"
+
+using namespace cv;
+using namespace std;
+
+Mat orgim;
+
+int main()
+{
+
+	orgim = imread("logo.jpg");
+	
+	imshow("Original image", orgim);
+
+	cvtColor(orgim, orgim, CV_BGR2GRAY);
+	Canny(orgim, orgim, 100,500);
+	orgim.convertTo(orgim, CV_8U);
+
+	imshow("image", orgim);
+
+	waitKey(0);
+	return 0;
+}

@@ -1,0 +1,54 @@
+#include<opencv2/core/core.hpp>
+#include<opencv2/imgproc/imgproc.hpp>
+#include<opencv2/highgui/highgui.hpp>
+#include<opencv2/imgcodecs/imgcodecs.hpp>
+#include<iostream>
+
+using namespace cv;
+using namespace std;
+
+Mat image,newCont;
+void convert(Mat input, Mat output, int derinlik, float alfa,int beta)
+{
+	if (derinlik == -1)
+	{
+		for(int i=0;i<input.rows;i++){
+			for(int j=0;j<input.cols;j++){
+
+				if (input.at<Vec3b>(i, j)[0] * alfa > 255)input.at<Vec3b>(i, j)[0] = 255;
+				else input.at<Vec3b>(i, j)[0] = (input.at<Vec3b>(i, j)[0] * alfa)+beta;
+
+				if (input.at<Vec3b>(i, j)[1] * alfa > 255)input.at<Vec3b>(i, j)[1] = 255;
+				else input.at<Vec3b>(i, j)[1] = (input.at<Vec3b>(i, j)[1] * alfa)+beta;
+
+				if (input.at<Vec3b>(i, j)[2] * alfa > 255)input.at<Vec3b>(i, j)[2] = 255;
+				else input.at<Vec3b>(i, j)[2] = (input.at<Vec3b>(i, j)[2] * alfa)+beta;
+			}
+		}
+	}
+	else if (derinlik == 1) 
+	{
+		cvtColor(input, input, CV_BGR2GRAY);
+		for (int i = 0; i < input.rows; i++) {
+			for (int j = 0; j < input.cols; j++) {
+				if (input.at<uchar>(i, j) * alfa > 255) input.at<uchar>(i, j) = 255;
+				else input.at<uchar>(i,j)=(input.at<uchar>(i,j)*alfa)+beta;
+			}
+		}
+
+	}
+	newCont = input;
+}
+int main()
+{
+	Mat image = imread("resim.jpg");
+	resize(image, image, Size(800, 700));
+	imshow("Resim1", image);
+	convert(image, newCont, -1, 0.5,0);
+	imshow("Resim2", newCont);
+	convert(image, newCont, 1, 0.5,0);
+
+	imshow("Resim3", newCont);
+	waitKey(0);
+	return 0;
+}

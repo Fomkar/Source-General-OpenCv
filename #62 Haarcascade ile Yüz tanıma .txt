@@ -1,0 +1,41 @@
+// Haar Cascade Yüz Tespiti
+#include<opencv2/opencv.hpp>
+#include<opencv2/core/cuda.hpp>
+#include<opencv2/highgui/highgui.hpp>
+#include<opencv2/core/core.hpp>
+#include<opencv2/imgproc/imgproc.hpp>
+#include<opencv2/imgcodecs/imgcodecs.hpp>
+#include<opencv2/objdetect/objdetect.hpp>
+#include<iostream>
+
+using namespace cv;
+using namespace std;
+
+Mat image, grayim, imthresh;
+
+int main()
+{
+	image = imread("face2.jpg");
+	resize(image, image, Size(800, 1000));
+	CascadeClassifier veri;
+	veri.load("haarcascade_frontalface_default.xml");
+
+	cvtColor(image, grayim, CV_BGR2GRAY);
+
+	vector<Rect> verivektoru;
+
+	veri.detectMultiScale(grayim, verivektoru, 1.2, 3, 0, Size(30, 30));
+
+	for (int i = 0; i < verivektoru.size(); i++)
+	{
+		Point Pt1(verivektoru[i].x + verivektoru[i].width, verivektoru[i].y + verivektoru[i].width);
+		Point Pt2(verivektoru[i].x , verivektoru[i].y );
+		rectangle(image, Pt1, Pt2, cvScalar(0, 0, 255), 2, 8, 0);
+	}
+	imshow("Yuz tanima", image);
+
+
+
+	waitKey(0);
+	return 0;
+}

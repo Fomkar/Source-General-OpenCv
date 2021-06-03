@@ -1,0 +1,24 @@
+#include<opencv2/core/core.hpp>
+#include<opencv2/highgui/highgui.hpp>
+#include<opencv2/imgcodecs/imgcodecs.hpp>
+#include<opencv2/imgproc/imgproc.hpp>
+#include<iostream>
+
+using namespace std;
+using namespace cv;
+
+Mat tersbit;
+
+int main()
+{
+	Mat image = imread("resim.jpg");
+	
+	bitwise_not (image, tersbit);
+	resize(tersbit, tersbit, Size(500, 500));
+	resize(image, image, Size(tersbit.rows, tersbit.cols));
+	imshow("Normal Resim", image);
+	imshow("Ters bit Resim", tersbit);
+
+	waitKey(0);
+	return 0;
+}
