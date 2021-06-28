@@ -1,0 +1,47 @@
+#include <opencv2/core/core.hpp>
+#include <opencv2/highgui/highgui.hpp>
+#include<opencv2/opencv.hpp>
+#include <iostream>//cout için gerekli
+
+using namespace std;
+using namespace cv;
+
+int main()
+{
+	char dosya[150];
+	vector<cv::String> fn;
+	glob("D:\\New_images_200x200\\*.jpg", fn, false);
+
+	Mat images;
+	size_t count = fn.size(); //number of png files in images folder7
+	cout << count << endl;
+	
+	
+	for (size_t i = 0; i < count; i++)
+	{
+		Mat img1 = imread("bos.jpg");
+		resize(img1, img1, Size(700, 700));
+		Mat dst;
+		dst = imread(fn[i]);
+		
+		//cout << "Dosya yolu : "<< fn[i] << endl;
+		//cout << "Resiminin Sutunu :" << dst.rows << endl <<"Resimin Satiri : " << dst.cols << endl;
+		
+		imshow("Resim Okuma", dst);
+
+		int x = (img1.cols / 2 - dst.cols / 2);
+		int y = (img1.rows / 2 - dst.rows / 2);
+		// Copy images in correct position
+		//img1.copyTo(Rect(0, 0, img1.cols, img1.rows)));
+		dst.copyTo(img1(Rect(x, y, dst.cols, dst.rows)));
+		sprintf(dosya, "D:\\New_images_700x700\\image_%d.jpg", i);
+		imwrite(dosya, img1);
+		imshow("son dosya", img1);
+		//Bir tusa basılmasını bekliyor
+		waitKey(200);
+		//Pencere kapanıyor
+		
+	}
+
+	return 0;
+}
