@@ -16,7 +16,7 @@ int main()
 	size_t count = fn.size(); //number of png files in images folder7
 	cout << count << endl;
 	
-	
+	// int i=1 ; // eğer götüntü isimleri 1 den başlasın derseniz
 	for (size_t i = 0; i < count; i++)
 	{
 		Mat img1 = imread("bos.jpg");
