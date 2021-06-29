@@ -11,7 +11,7 @@ int trackVal;
 
 void callbacktrack(int, void*)
 {
-	count << trackVal << endl;
+	cout << trackVal << endl;
 }
 
 int main()
