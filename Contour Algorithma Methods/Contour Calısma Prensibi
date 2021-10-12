@@ -1,0 +1,54 @@
+
+#include "opencv2/imgcodecs.hpp"
+#include "opencv2/highgui.hpp"
+#include "opencv2/imgproc.hpp"
+#include <iostream>
+using namespace cv;
+using namespace std;
+Mat src_gray;
+int thresh = 100;
+RNG rng(12345);
+void thresh_callback(int, void*);
+
+int main(int argc, char** argv)
+{
+
+    vector<vector<Point> > v;
+
+    Mat originalimage;
+    Mat image;
+
+    // Loads the original image
+    originalimage = imread("resim.jpg", 1);
+    // Converts original image to an 8UC1 image
+    cvtColor(originalimage, image, CV_BGR2GRAY);
+
+    // Finds contours
+    findContours(image, v, CV_RETR_LIST, CV_CHAIN_APPROX_NONE);
+
+    // Finds the contour with the largest area
+    int area = 150;
+    int idx;
+    for (int i = 0; i < v.size(); i++) {
+     
+            idx = i;
+
+            cout << i << endl;
+
+        // Calculates the bounding rect of the largest area contour
+        Rect rect = boundingRect(v[idx]);
+        Point pt1, pt2;
+        pt1.x = rect.x;
+        pt1.y = rect.y;
+        pt2.x = rect.x + rect.width;
+        pt2.y = rect.y + rect.height;
+        // Draws the rect in the original image and show it
+        rectangle(originalimage, pt1, pt2, CV_RGB(255, 0, 0), 1);
+
+        cvNamedWindow("Contour Bulma", CV_WINDOW_AUTOSIZE);
+        imshow("Contour Bulma", originalimage);
+        cvWaitKey(15);
+    }
+    waitKey(0);
+    return 0;
+}
