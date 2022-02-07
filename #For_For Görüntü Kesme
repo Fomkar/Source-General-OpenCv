@@ -1,0 +1,56 @@
+#include<opencv2/opencv.hpp>
+#include<iostream>
+#include<ctime>
+
+// Namespace nullifies the use of cv::function();
+using namespace std;
+using namespace cv;
+
+int main()
+{
+	// Read image
+	Mat image = imread("test.jpg");
+	cout << "Width : " << image.size().width << endl;
+	cout << "Height: " << image.size().height << endl;
+	cout << "Channels: :" << image.channels() << endl;
+	// Crop image
+	cvtColor(image, image, CV_BGR2GRAY);
+	Mat cropped_image(130,130, CV_8UC1,Scalar(150));
+	//imshow("Cropped Image", cropped_image);
+
+	//waitKey(0);
+
+	int a = 0, b = 0;
+
+	clock_t start, end;
+	start = clock();
+	for (int i = 915; i < 1045; i++)
+	{
+		for (int j = 420; j < 550; j++)
+		{
+
+		cropped_image.at<uchar>(a,b) = image.at<uchar>(j, i);
+		a++;
+		cout << a << endl;
+		}
+		a = 0;
+		b++;
+		cout << b << endl;
+	}
+	cout << cropped_image.rows << "x" << cropped_image.cols << endl;
+	//Mat croped_image = image(Range(420, 550), Range(915, 1045));
+	end = clock();
+	//imshow("Croped Image", croped_image);
+	cout << "Time required for execution: " << (double)(end - start)*1000 / CLOCKS_PER_SEC << " miliseconds." << "\n";
+	//display image
+	imshow(" Original Image", image);
+	imshow("Cropped Image", cropped_image);
+
+	//Save the cropped Image
+	imwrite("Cropped Image.jpg", cropped_image);
+
+	// 0 means loop infinitely
+	waitKey(0);
+	destroyAllWindows();
+	return 0;
+}
